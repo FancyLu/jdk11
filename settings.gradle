@@ -77,6 +77,8 @@ include "spring-boot-project:spring-boot-test-autoconfigure"
 //include "spring-boot-tests:spring-boot-integration-tests:spring-boot-loader-tests"
 //include "spring-boot-tests:spring-boot-integration-tests:spring-boot-server-tests"
 
+include "spring-boot-study"
+
 file("${rootDir}/spring-boot-project/spring-boot-starters").eachDirMatch(~/spring-boot-starter.*/) {
 	include "spring-boot-project:spring-boot-starters:${it.name}"
 }
