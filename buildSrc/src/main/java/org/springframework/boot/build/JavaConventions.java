@@ -26,8 +26,8 @@ import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import io.spring.javaformat.gradle.FormatTask;
-import io.spring.javaformat.gradle.SpringJavaFormatPlugin;
+//import io.spring.javaformat.gradle.FormatTask;
+//import io.spring.javaformat.gradle.SpringJavaFormatPlugin;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -96,7 +96,7 @@ class JavaConventions {
 	void apply(Project project) {
 		project.getPlugins().withType(JavaBasePlugin.class, (java) -> {
 			project.getPlugins().apply(TestFailuresPlugin.class);
-			configureSpringJavaFormat(project);
+//			configureSpringJavaFormat(project);
 			project.setProperty("sourceCompatibility", "1.8");
 			configureJavaCompileConventions(project);
 			configureJavadocConventions(project);
@@ -197,18 +197,18 @@ class JavaConventions {
 		}
 	}
 
-	private void configureSpringJavaFormat(Project project) {
-		project.getPlugins().apply(SpringJavaFormatPlugin.class);
-		project.getTasks().withType(FormatTask.class, (formatTask) -> formatTask.setEncoding("UTF-8"));
-		project.getPlugins().apply(CheckstylePlugin.class);
-		CheckstyleExtension checkstyle = project.getExtensions().getByType(CheckstyleExtension.class);
-		checkstyle.setToolVersion("8.29");
-		checkstyle.getConfigDirectory().set(project.getRootProject().file("src/checkstyle"));
-		String version = SpringJavaFormatPlugin.class.getPackage().getImplementationVersion();
-		DependencySet checkstyleDependencies = project.getConfigurations().getByName("checkstyle").getDependencies();
-		checkstyleDependencies
-				.add(project.getDependencies().create("io.spring.javaformat:spring-javaformat-checkstyle:" + version));
-	}
+//	private void configureSpringJavaFormat(Project project) {
+//		project.getPlugins().apply(SpringJavaFormatPlugin.class);
+//		project.getTasks().withType(FormatTask.class, (formatTask) -> formatTask.setEncoding("UTF-8"));
+//		project.getPlugins().apply(CheckstylePlugin.class);
+//		CheckstyleExtension checkstyle = project.getExtensions().getByType(CheckstyleExtension.class);
+//		checkstyle.setToolVersion("8.29");
+//		checkstyle.getConfigDirectory().set(project.getRootProject().file("src/checkstyle"));
+//		String version = SpringJavaFormatPlugin.class.getPackage().getImplementationVersion();
+//		DependencySet checkstyleDependencies = project.getConfigurations().getByName("checkstyle").getDependencies();
+//		checkstyleDependencies
+//				.add(project.getDependencies().create("io.spring.javaformat:spring-javaformat-checkstyle:" + version));
+//	}
 
 	private void configureDependencyManagement(Project project) {
 		ConfigurationContainer configurations = project.getConfigurations();

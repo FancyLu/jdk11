@@ -24,8 +24,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 
-import io.spring.javaformat.formatter.FileEdit;
-import io.spring.javaformat.formatter.FileFormatter;
+//import io.spring.javaformat.formatter.FileEdit;
+//import io.spring.javaformat.formatter.FileFormatter;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -117,7 +117,7 @@ public class MavenPluginPlugin implements Plugin<Project> {
 	}
 
 	private void copyIntTestMavenRepositoryFiles(Project project, CopySpec copy,
-			RuntimeClasspathMavenRepository runtimeClasspathMavenRepository) {
+												 RuntimeClasspathMavenRepository runtimeClasspathMavenRepository) {
 		copy.from(project.getConfigurations().getByName(MavenRepositoryPlugin.MAVEN_REPOSITORY_CONFIGURATION_NAME));
 		copy.from(new File(project.getBuildDir(), "maven-repository"));
 		copy.from(runtimeClasspathMavenRepository);
@@ -188,7 +188,7 @@ public class MavenPluginPlugin implements Plugin<Project> {
 	}
 
 	private FormatHelpMojoSourceTask createCopyFormattedHelpMojoSourceTask(Project project,
-			MavenExec generateHelpMojoTask, File generatedHelpMojoDir) {
+																		   MavenExec generateHelpMojoTask, File generatedHelpMojoDir) {
 		FormatHelpMojoSourceTask copyFormattedHelpMojoSourceTask = project.getTasks()
 				.create("copyFormattedHelpMojoSource", FormatHelpMojoSourceTask.class);
 		copyFormattedHelpMojoSourceTask.setGenerator(generateHelpMojoTask);
@@ -257,24 +257,25 @@ public class MavenPluginPlugin implements Plugin<Project> {
 
 		@TaskAction
 		void syncAndFormat() {
-			FileFormatter formatter = new FileFormatter();
+//			FileFormatter formatter = new FileFormatter();
 			for (File output : this.generator.getOutputs().getFiles()) {
-				formatter.formatFiles(getProject().fileTree(output), StandardCharsets.UTF_8)
-						.forEach((edit) -> save(output, edit));
+				output = null;
+//				formatter.formatFiles(getProject().fileTree(output), StandardCharsets.UTF_8)
+//						.forEach((edit) -> save(output, edit));
 			}
 		}
 
-		private void save(File output, FileEdit edit) {
-			Path relativePath = output.toPath().relativize(edit.getFile().toPath());
-			Path outputLocation = this.outputDir.toPath().resolve(relativePath);
-			try {
-				Files.createDirectories(outputLocation.getParent());
-				Files.write(outputLocation, edit.getFormattedContent().getBytes(StandardCharsets.UTF_8));
-			}
-			catch (Exception ex) {
-				throw new TaskExecutionException(this, ex);
-			}
-		}
+//		private void save(File output, FileEdit edit) {
+//			Path relativePath = output.toPath().relativize(edit.getFile().toPath());
+//			Path outputLocation = this.outputDir.toPath().resolve(relativePath);
+//			try {
+//				Files.createDirectories(outputLocation.getParent());
+//				Files.write(outputLocation, edit.getFormattedContent().getBytes(StandardCharsets.UTF_8));
+//			}
+//			catch (Exception ex) {
+//				throw new TaskExecutionException(this, ex);
+//			}
+//		}
 
 	}
 
@@ -336,8 +337,7 @@ public class MavenPluginPlugin implements Plugin<Project> {
 					try {
 						Files.copy(result.getFile().toPath(), repositoryLocation.toPath(),
 								StandardCopyOption.REPLACE_EXISTING);
-					}
-					catch (IOException ex) {
+					} catch (IOException ex) {
 						throw new RuntimeException("Failed to copy artifact '" + result + "'", ex);
 					}
 				}
