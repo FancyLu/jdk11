@@ -145,6 +145,7 @@ class JavaConventions {
 
 	private void configureTestConventions(Project project) {
 		project.getTasks().withType(Test.class, (test) -> {
+			test.setEnabled(false);
 			withOptionalBuildJavaHome(project, (javaHome) -> test.setExecutable(javaHome + "/bin/java"));
 			test.useJUnitPlatform();
 			test.setMaxHeapSize("1024M");

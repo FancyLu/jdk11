@@ -35,9 +35,6 @@ public class MySpringUtils implements ApplicationContextAware {
      * 注意 bean name默认 = 类名(首字母小写)
      * 例如: A8sClusterDao = getBean("a8sClusterDao")
      *
-     * @param beanName
-     * @return
-     * @throws BeansException
      */
 //    public static <T> T getBeanByBeanName(String beanName) {
 //        //Class classz=Class.forName(className).getClass().newInstance();
@@ -53,10 +50,6 @@ public class MySpringUtils implements ApplicationContextAware {
     /**
      * 根据类名获取到bean
      *
-     * @param <T>
-     * @param clazz
-     * @return
-     * @throws BeansException
      */
     @SuppressWarnings("unchecked")
     public static <T> T getBeanByClass(Class<T> clazz) throws BeansException {
@@ -83,8 +76,6 @@ public class MySpringUtils implements ApplicationContextAware {
     /**
      * 创建一个bean
      *
-     * @param name
-     * @return
      */
     public static boolean containsBeanByBeanName(String name) {
         return MySpringUtils.getApplicationContext().containsBean(name);
