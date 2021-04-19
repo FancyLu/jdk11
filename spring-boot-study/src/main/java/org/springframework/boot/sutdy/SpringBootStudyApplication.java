@@ -16,8 +16,8 @@ public class SpringBootStudyApplication {
 		ApplicationContext applicationContext = SpringApplication.run(SpringBootStudyApplication.class, args);
 
 		TestServiceA testServiceA = applicationContext.getBean(TestServiceA.class);
-		testServiceA.doSomething("from main");//test check
-		System.out.println("build success!...");
+		testServiceA.doSomething("from main");
+		System.out.println("springboot build success!...");
 	}
 
 }

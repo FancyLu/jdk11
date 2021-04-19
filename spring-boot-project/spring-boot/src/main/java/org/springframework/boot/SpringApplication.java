@@ -1297,7 +1297,7 @@ public class SpringApplication {
 	 * @return the running {@link ApplicationContext}
 	 */
 	public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
-		System.out.println("test import local springboot by nick...");
+		System.out.println("test import local spring-boot by nicky...");
 		return run(new Class<?>[] { primarySource }, args);
 	}
 
