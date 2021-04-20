@@ -22,7 +22,6 @@ git checkout nicky5.3.4
 3. idea导入两个项目（导入时，如自动build，先结束掉）
 4. 更改 idea的gradle的jdk版本
 
-![first_img](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/36ba5c95351b4c68917aa8b6db9d2794~tplv-k3u1fbpfcp-watermark.image) 
 ![image.png](https://img-blog.csdnimg.cn/img_convert/bde2f5a34372e186e1bb187f5185a6a9.png)
 
 5. 更改 idea的project的jdk版本，配置使用【gradle-wrapper.properties】的配置去构建项目，否则会有版本问题
