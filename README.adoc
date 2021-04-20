@@ -1,3 +1,41 @@
+# 一. 引入已经配置好的源码
+> 已经配置好的码云仓库，下载后切换到对应分支即可直接运行</br>jdk11国内镜像：https://mirrors.tuna.tsinghua.edu.cn/AdoptOpenJDK/11/jdk/x64/linux/</br></br>spring版本：5.3.4</br>spring码云地址： https://gitee.com/tangjingshan/Spring-Framework</br>springboot版本：2.4.3</br>springboot码云地址：https://gitee.com/tangjingshan/spring-boot</br>  </br>切换无更改分支：git checkout nicky5.3.4（只改了配置，没有改动源码）</br>切换学习分支：git checkout  nickyStudy5.3.4 （此分支会加上学习时的注释，偶尔也会改动源码）
+
+**先build springframework源码,再build springboot源码**
+
+1. 下载好jdk11到指定目录
+2.  获取码云代码
+
+```js
+git checkout nicky5.3.4
+```
+3. idea导入两个项目（导入时，如自动build，先结束掉）
+
+4. 更改 idea的gradle的jdk版本
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/36ba5c95351b4c68917aa8b6db9d2794~tplv-k3u1fbpfcp-watermark.image)
+
+5. 更改 idea的project的jdk版本，配置使用【gradle-wrapper.properties】的配置去构建项目，否则会有版本问题
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7d13706ac1554092911b398c9d0c52b3~tplv-k3u1fbpfcp-watermark.image)
+
+6.  build project
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/33056ce5fe1f41fc858001c593c43304~tplv-k3u1fbpfcp-watermark.image)
+
+
+7. 执行springframework下的publishToMavenLocal,打包到本地仓库
+
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5d75a2a072ba4e5c89cc5e76f72ff735~tplv-k3u1fbpfcp-watermark.image)
+
+8.  运行stduy demo
+> spring demo路径： org.springframework.study.TestRegisterBean#main
+
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0437e8d7973344ccac1c9b1f8d57f0c8~tplv-k3u1fbpfcp-watermark.image)
+
+> springboot路径：org.springframework.boot.sutdy.SpringBootStudyApplication#main
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ee2a91e1070142a48edb0e79a6b52bba~tplv-k3u1fbpfcp-watermark.image)
+
 = Spring Boot image:https://ci.spring.io/api/v1/teams/spring-boot/pipelines/spring-boot-2.5.x/jobs/build/badge["Build Status", link="https://ci.spring.io/teams/spring-boot/pipelines/spring-boot-2.5.x?groups=Build"] image:https://badges.gitter.im/Join Chat.svg["Chat",link="https://gitter.im/spring-projects/spring-boot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"] image:https://img.shields.io/badge/Revved%20up%20by-Gradle%20Enterprise-06A0CE?logo=Gradle&labelColor=02303A["Revved up by Gradle Enterprise", link="https://ge.spring.io/scans?&search.rootProjectNames=Spring%20Boot%20Build&search.rootProjectNames=spring-boot-build"]
 :docs: https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference
 :github: https://github.com/spring-projects/spring-boot
