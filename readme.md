@@ -12,7 +12,7 @@
 >   </br>切换学习分支：git checkout  nickyStudy5.3.4 （此分支会加上学习时的注释，偶尔也会改动源码）
 >   
 
- **先build springframework源码,再build  springboot源码**
+ **先build springframework源码, 再build  springboot源码**
 1. 下载好jdk11到指定目录
 2.  获取两个项目的码云代码
 
