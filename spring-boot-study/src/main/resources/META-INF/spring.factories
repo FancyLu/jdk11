@@ -1,0 +1,2 @@
+org.springframework.boot.sutdy.extend_life_cycle.springFactories.MyEnableAutoConfiguration=\
+org.springframework.boot.sutdy.extend_life_cycle.springFactories.SpringFactoriesOtherPackage
