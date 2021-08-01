@@ -3,15 +3,12 @@ package org.springframework.boot.sutdy.dataFlow.tomact;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.sutdy.SpringBootStudyApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.web.context.ConfigurableWebApplicationContext;
 
-import javax.servlet.Servlet;
 
 /**
  * @author nicky
@@ -21,7 +18,7 @@ import javax.servlet.Servlet;
 public class StartTomact {
 	/**
 	 * 1.引入spring-boot-starter-web包，间接引入了以下class
-	 * spring-web下的{@link ConfigurableWebApplicationContext 和 tomcat-embed-core下的{@link Servlet}}
+	 * spring-web下的{@link org.springframework.web.context.ConfigurableWebApplicationContext 和 tomcat-embed-core下的{@link javax.servlet.Servlet}}
 	 *
 	 * 2.判断是否包含以上两个class,如果有则认为是web应用
 	 * {@link SpringApplication#SpringApplication(org.springframework.core.io.ResourceLoader, java.lang.Class[])}

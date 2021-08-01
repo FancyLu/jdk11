@@ -50,6 +50,7 @@ import org.apache.catalina.WebResourceSet;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.AprLifecycleListener;
+import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.loader.WebappLoader;
 import org.apache.catalina.session.StandardManager;
 import org.apache.catalina.startup.Tomcat;
@@ -241,6 +242,9 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 			addJasperInitializer(context);
 		}
 		context.addLifecycleListener(new StaticResourceConfigurer(context));
+		/**
+		 * {@link AbstractServletWebServerFactory#mergeInitializers(org.springframework.boot.web.servlet.ServletContextInitializer...)}
+		 */
 		ServletContextInitializer[] initializersToUse = mergeInitializers(initializers);
 		host.addChild(context);
 		configureContext(context, initializersToUse);
@@ -363,6 +367,12 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 			embeddedContext.setStarter(starter);
 			embeddedContext.setFailCtxIfServletStartFails(true);
 		}
+		/**
+		 * //累加ServletContextInitializer到tomact(以下属性)
+		 * {@link StandardContext#initializers}
+		 * 在以下位置回调ServletContextInitializer#onStartup
+		 * {@link StandardContext#startInternal()}
+		 */
 		context.addServletContainerInitializer(starter, NO_CLASSES);
 		for (LifecycleListener lifecycleListener : this.contextLifecycleListeners) {
 			context.addLifecycleListener(lifecycleListener);

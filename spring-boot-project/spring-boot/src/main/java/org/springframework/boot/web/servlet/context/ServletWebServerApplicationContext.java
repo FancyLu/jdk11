@@ -183,6 +183,8 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 			 * 创建并启动 tomact
 			 * {@link TomcatServletWebServerFactory#getWebServer(org.springframework.boot.web.servlet.ServletContextInitializer...)}
 			 *
+			 * getSelfInitializer(); //这里会获取springmvc-DispatcherServlet
+			 *
 			 * 在spring.factories配置的ServletWebServerFactoryAutoConfiguration.class的EmbeddedTomcat加载
 			 * {@link org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration}
 			 * {@link org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryConfiguration.EmbeddedTomcat#tomcatServletWebServerFactory(org.springframework.beans.factory.ObjectProvider, org.springframework.beans.factory.ObjectProvider, org.springframework.beans.factory.ObjectProvider)}
@@ -244,6 +246,9 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		registerApplicationScope(servletContext);
 		WebApplicationContextUtils.registerEnvironmentBeans(getBeanFactory(), servletContext);
 		for (ServletContextInitializer beans : getServletContextInitializerBeans()) {
+			/**
+			 * {@link org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean}
+			 */
 			beans.onStartup(servletContext);
 		}
 	}
