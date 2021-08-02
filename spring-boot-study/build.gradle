@@ -8,8 +8,18 @@ description = "Spring Boot Study"
 
 dependencies {
     api(project(":spring-boot-project:spring-boot-starters:spring-boot-starter"))
+    //api(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-web"))
+    implementation(":spring-boot-project:spring-boot-starters:spring-boot-starter-web") {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.0.0.RELEASE'
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '8.5.28'
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el', version: '8.5.28'
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '8.5.28'
+
+
+
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
-    implementation(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-web"))
     testImplementation(project(":spring-boot-project:spring-boot-test"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }

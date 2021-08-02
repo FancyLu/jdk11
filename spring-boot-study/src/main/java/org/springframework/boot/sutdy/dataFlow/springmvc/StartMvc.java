@@ -7,13 +7,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
-import org.springframework.boot.sutdy.dataFlow.tomact.StartTomact;
+import org.springframework.boot.sutdy.controller.ComRollbackController;
+import org.springframework.boot.sutdy.dataFlow.springmvc.dd.TestController;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.context.annotation.Import;
 
 import javax.servlet.ServletContext;
 
@@ -21,6 +22,7 @@ import javax.servlet.ServletContext;
  * @author nicky
  * @date 2021/7/30 下午6:42
  */
+//@Import(value = {TestController.class, ComRollbackController.class})
 @SpringBootApplication
 public class StartMvc {
 	/**
@@ -59,11 +61,13 @@ public class StartMvc {
 	 * 		(entry.getKey().onStartup(entry.getValue(), getServletContext());//回调onStartup)
 	 *
 	 *
+	 * 九大组件在以下位置初始化
+	 * {@link org.springframework.web.servlet.DispatcherServlet#initStrategies(org.springframework.context.ApplicationContext)}
 	 *
 	 * org.springframework.boot.web.servlet.ServletContextInitializer
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = SpringApplication.run(StartTomact.class, args);
+		ApplicationContext applicationContext = SpringApplication.run(StartMvc.class, args);
 	}
 }
