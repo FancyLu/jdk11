@@ -7,14 +7,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
-import org.springframework.boot.sutdy.controller.ComRollbackController;
-import org.springframework.boot.sutdy.dataFlow.springmvc.dd.TestController;
+import org.springframework.boot.sutdy.controller.TestController;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.ServletContext;
 
@@ -22,7 +23,7 @@ import javax.servlet.ServletContext;
  * @author nicky
  * @date 2021/7/30 下午6:42
  */
-//@Import(value = {TestController.class, ComRollbackController.class})
+@Import(value = {TestController.class})
 @SpringBootApplication
 public class StartMvc {
 	/**
@@ -43,7 +44,7 @@ public class StartMvc {
 	 * ServletContext等同于【org.apache.catalina.Context】，其在以下方法持有Context的引用
 	 * {@link org.apache.catalina.core.ApplicationContext#getContext(java.lang.String)}
 	 *  实例化ApplicationContext
-	 * {@link ServletContext#addServlet(java.lang.String, java.lang.Class)}
+	 * {@link StandardContext#startInternal()}
 	 *		(entry.getKey().onStartup(entry.getValue(), getServletContext());//getServletContext实例化ApplicationContext)
 	 *  新增servlet
 	 * {@link ServletContext#addServlet(java.lang.String, java.lang.Class)}
@@ -62,7 +63,10 @@ public class StartMvc {
 	 *
 	 *
 	 * 九大组件在以下位置初始化
-	 * {@link org.springframework.web.servlet.DispatcherServlet#initStrategies(org.springframework.context.ApplicationContext)}
+	 * {@link DispatcherServlet#initStrategies(org.springframework.context.ApplicationContext)}
+	 *
+	 * RequestMapping在以下位置处理
+	 * {@link RequestMappingHandlerMapping#afterPropertiesSet()}
 	 *
 	 * org.springframework.boot.web.servlet.ServletContextInitializer
 	 * @param args

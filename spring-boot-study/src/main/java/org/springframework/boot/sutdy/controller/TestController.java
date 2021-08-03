@@ -1,4 +1,4 @@
-package org.springframework.boot.sutdy.dataFlow.springmvc.dd;
+package org.springframework.boot.sutdy.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 public class TestController {
-	@RequestMapping(name = "/test", method = RequestMethod.GET)
+	@RequestMapping(path = "/test", method = RequestMethod.GET)
 	public String test() {
 		return "Hellow World!";
 	}
