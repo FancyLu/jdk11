@@ -15,6 +15,7 @@ import org.springframework.boot.web.servlet.context.ServletWebServerApplicationC
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.ServletContext;
@@ -67,6 +68,10 @@ public class StartMvc {
 	 *
 	 * RequestMapping在以下位置处理
 	 * {@link RequestMappingHandlerMapping#afterPropertiesSet()}
+	 *
+	 * {@link AbstractHandlerMethodMapping.MappingRegistry#register(java.lang.Object, java.lang.Object, java.lang.reflect.Method)}
+	 * {@link AbstractHandlerMethodMapping#lookupHandlerMethod(java.lang.String, javax.servlet.http.HttpServletRequest)}
+	 *
 	 *
 	 * org.springframework.boot.web.servlet.ServletContextInitializer
 	 * @param args
