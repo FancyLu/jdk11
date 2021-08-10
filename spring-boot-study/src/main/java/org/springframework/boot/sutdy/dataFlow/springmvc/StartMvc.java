@@ -14,8 +14,11 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.method.support.InvocableHandlerMethod;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.ServletContext;
@@ -66,12 +69,31 @@ public class StartMvc {
 	 * 九大组件在以下位置初始化
 	 * {@link DispatcherServlet#initStrategies(org.springframework.context.ApplicationContext)}
 	 *
-	 * RequestMapping在以下位置处理
+	 * @RequestMapping的载体
+	 * {@link AbstractHandlerMethodMapping.MappingRegistration}
+	 *
+	 * RequestMapping的注册
 	 * {@link RequestMappingHandlerMapping#afterPropertiesSet()}
-	 *
+	 * {@link AbstractHandlerMethodMapping#afterPropertiesSet()}
+	 * {@link AbstractHandlerMethodMapping#initHandlerMethods()}
+	 * {@link AbstractHandlerMethodMapping#processCandidateBean(java.lang.String)}
+	 * 		(isHandler(beanType);//判断当前Class是否持有 @Controller/@RequestMapping注解)
+	 * {@link AbstractHandlerMethodMapping#detectHandlerMethods(java.lang.Object)}
+	 * 		(getMappingForMethod(method, userType);判断方法是否持有@RequestMapping)
+	 * {@link AbstractHandlerMethodMapping#registerHandlerMethod(java.lang.Object, java.lang.reflect.Method, java.lang.Object)}
 	 * {@link AbstractHandlerMethodMapping.MappingRegistry#register(java.lang.Object, java.lang.Object, java.lang.reflect.Method)}
-	 * {@link AbstractHandlerMethodMapping#lookupHandlerMethod(java.lang.String, javax.servlet.http.HttpServletRequest)}
+	 * 		（this.registry.put(mapping, new MappingRegistration()）//存入@RequestMapping-Method，key- {@link RequestMappingInfo}
 	 *
+	 * RequestMapping的映射
+	 * {@link DispatcherServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
+	 * {@link FrameworkServlet#processRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
+	 * {@link DispatcherServlet#doService(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}
+	 * {@link AbstractHandlerMethodMapping#lookupHandlerMethod(java.lang.String, javax.servlet.http.HttpServletRequest)}
+	 * {@link AbstractHandlerMethodMapping#addMatchingMappings(java.util.Collection, java.util.List, javax.servlet.http.HttpServletRequest)}
+	 * 		( this.mappingRegistry.getRegistrations().get(mapping)));//获取@RequestMapping-Method，key- {@link RequestMappingInfo}
+	 *
+	 * RequestMapping-Method的调用
+	 * {@link InvocableHandlerMethod#doInvoke(java.lang.Object...)}
 	 *
 	 * org.springframework.boot.web.servlet.ServletContextInitializer
 	 * @param args
