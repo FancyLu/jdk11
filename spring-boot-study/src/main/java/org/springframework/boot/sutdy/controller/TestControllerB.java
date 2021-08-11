@@ -10,17 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping
-public class TestController {
-	@RequestMapping(path = "/test", method = RequestMethod.GET)
+public class TestControllerB {
+	@RequestMapping(path = "/testB", method = RequestMethod.GET)
 	public String test() {
 		return "Hellow World!";
 	}
-	@RequestMapping(path = "/test1", method = RequestMethod.GET)
+	@RequestMapping(path = "/testB1", method = RequestMethod.GET)
 	public String test1() {
 		return "Hellow World1!";
-	}
-
-	public String test2() {
-		return "Hellow World2!";
 	}
 }
