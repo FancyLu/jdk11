@@ -110,6 +110,10 @@ public abstract class DynamicRegistrationBean<D extends Registration.Dynamic> ex
 			logger.info(StringUtils.capitalize(description) + " was not registered (possibly already registered?)");
 			return;
 		}
+		/**
+		 *  //设置path-DispatcherServlet的映射关系
+		 * {@link ServletRegistrationBean#configure(javax.servlet.ServletRegistration.Dynamic)}
+		 */
 		configure(registration);
 	}
 

@@ -43,13 +43,23 @@ public abstract class RegistrationBean implements ServletContextInitializer, Ord
 
 	private boolean enabled = true;
 
+	/**
+	 * 注册servlet,以DispatcherServlet为例子
+	 * {@link org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean#onStartup(javax.servlet.ServletContext)}
+	 * @param servletContext the {@code ServletContext} to initialize
+	 * @throws ServletException
+	 */
 	@Override
 	public final void onStartup(ServletContext servletContext) throws ServletException {
-		String description = getDescription();
+		String description = getDescription();//返回待注册的servlet的名称DispatcherServlet=servlet dispatcherServlet
 		if (!isEnabled()) {
 			logger.info(StringUtils.capitalize(description) + " was not registered (disabled)");
 			return;
 		}
+		/**
+		 *  //设置path-DispatcherServlet的映射关系
+		 * {@link DynamicRegistrationBean#register(java.lang.String, javax.servlet.ServletContext)}
+		 */
 		register(description, servletContext);
 	}
 

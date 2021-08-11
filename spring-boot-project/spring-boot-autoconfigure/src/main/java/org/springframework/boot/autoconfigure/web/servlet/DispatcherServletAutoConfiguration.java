@@ -22,6 +22,7 @@ import java.util.List;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 
+import org.apache.catalina.core.StandardContext;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -117,6 +118,13 @@ public class DispatcherServletAutoConfiguration {
 		@ConditionalOnBean(value = DispatcherServlet.class, name = DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
 		public DispatcherServletRegistrationBean dispatcherServletRegistration(DispatcherServlet dispatcherServlet,
 				WebMvcProperties webMvcProperties, ObjectProvider<MultipartConfigElement> multipartConfig) {
+			/**
+			 * webMvcProperties.getServlet().getPath()="/" -> 这个路径为DispatcherServlet拦截的路径(路径默认为"/"，可通过spring.mvc.servlet.path配置)
+			 * 会在以下位置配置到TomcatEmbeddedContext
+			 * {@link DispatcherServletRegistrationBean#configure(javax.servlet.ServletRegistration.Dynamic)}
+			 * {@link org.springframework.boot.web.embedded.tomcat.TomcatEmbeddedContext#addServletMappingDecoded(java.lang.String, java.lang.String, boolean)}
+			 *
+			 */
 			DispatcherServletRegistrationBean registration = new DispatcherServletRegistrationBean(dispatcherServlet,
 					webMvcProperties.getServlet().getPath());
 			registration.setName(DEFAULT_DISPATCHER_SERVLET_BEAN_NAME);

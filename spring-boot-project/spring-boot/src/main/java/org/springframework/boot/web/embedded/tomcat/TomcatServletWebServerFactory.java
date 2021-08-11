@@ -196,6 +196,12 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 		for (Connector additionalConnector : this.additionalTomcatConnectors) {
 			tomcat.getService().addConnector(additionalConnector);
 		}
+		/**
+		 * //累加ServletContextInitializer到tomact(以下属性)
+		 * {@link StandardContext#initializers}
+		 * 在以下位置回调ServletContextInitializer#onStartup
+		 * {@link StandardContext#startInternal()}
+		 */
 		prepareContext(tomcat.getHost(), initializers);
 		return getTomcatWebServer(tomcat);// 启动tomact
 	}
@@ -215,7 +221,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 		}
 		context.setName(getContextPath());
 		context.setDisplayName(getDisplayName());
-		context.setPath(getContextPath());
+		context.setPath(getContextPath());//设置contextPath，默认为空字符串，即拦截所有请求
 		File docBase = (documentRoot != null) ? documentRoot : createTempDir("tomcat-docbase");
 		context.setDocBase(docBase.getAbsolutePath());
 		context.addLifecycleListener(new FixContextListener());
@@ -247,6 +253,12 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 		 */
 		ServletContextInitializer[] initializersToUse = mergeInitializers(initializers);
 		host.addChild(context);
+		/**
+		 * //累加ServletContextInitializer到tomact(以下属性)
+		 * {@link StandardContext#initializers}
+		 * 在以下位置回调ServletContextInitializer#onStartup
+		 * {@link StandardContext#startInternal()}
+		 */
 		configureContext(context, initializersToUse);
 		postProcessContext(context);
 	}
@@ -368,7 +380,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 			embeddedContext.setFailCtxIfServletStartFails(true);
 		}
 		/**
-		 * //累加ServletContextInitializer到tomact(以下属性)
+		 * //累加ServletContextInitializer到Context(以下属性)
 		 * {@link StandardContext#initializers}
 		 * 在以下位置回调ServletContextInitializer#onStartup
 		 * {@link StandardContext#startInternal()}

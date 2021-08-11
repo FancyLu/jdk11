@@ -26,6 +26,8 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
+import org.apache.catalina.core.ApplicationServletRegistration;
+import org.apache.catalina.core.StandardContext;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -175,7 +177,7 @@ public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrat
 	@Override
 	protected ServletRegistration.Dynamic addRegistration(String description, ServletContext servletContext) {
 		String name = getServletName();
-		return servletContext.addServlet(name, this.servlet);
+		return servletContext.addServlet(name, this.servlet);//将DispatcherServlet加载到tomact
 	}
 
 	/**
@@ -191,6 +193,11 @@ public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrat
 			urlMapping = DEFAULT_MAPPINGS;
 		}
 		if (!ObjectUtils.isEmpty(urlMapping)) {
+			/**
+			 * //设置path-DispatcherServlet的映射关系
+			 * {@link ApplicationServletRegistration#addMapping(java.lang.String...)}
+			 * {@link StandardContext#addServletMappingDecoded(java.lang.String, java.lang.String, boolean)}
+			 */
 			registration.addMapping(urlMapping);
 		}
 		registration.setLoadOnStartup(this.loadOnStartup);
