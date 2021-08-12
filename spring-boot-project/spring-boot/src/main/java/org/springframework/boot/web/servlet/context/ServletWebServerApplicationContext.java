@@ -157,7 +157,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	protected void onRefresh() {
 		super.onRefresh();
 		try {
-			createWebServer();
+			createWebServer();//创建并启动 tomact
 		}
 		catch (Throwable ex) {
 			throw new ApplicationContextException("Unable to start web server", ex);
@@ -177,6 +177,9 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		ServletContext servletContext = getServletContext();
 		if (webServer == null && servletContext == null) {
 			StartupStep createWebServer = this.getApplicationStartup().start("spring.boot.webserver.create");
+			/**
+			 * {@link TomcatServletWebServerFactory}
+			 */
 			ServletWebServerFactory factory = getWebServerFactory();
 			createWebServer.tag("factory", factory.getClass().toString());
 			/**
@@ -184,6 +187,8 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 			 * {@link TomcatServletWebServerFactory#getWebServer(org.springframework.boot.web.servlet.ServletContextInitializer...)}
 			 *
 			 * getSelfInitializer(); //这里会获取springmvc-DispatcherServlet
+			 * 这个方法返回的是{@link ServletWebServerApplicationContext#selfInitialize(javax.servlet.ServletContext)}的引用
+			 * 相当于ServletWebServerApplicationContext间接实现了ServletContextInitializer接口
 			 *
 			 * 在spring.factories配置的ServletWebServerFactoryAutoConfiguration.class的EmbeddedTomcat加载
 			 * {@link org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration}
@@ -238,13 +243,17 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 * @see #prepareWebApplicationContext(ServletContext)
 	 */
 	private org.springframework.boot.web.servlet.ServletContextInitializer getSelfInitializer() {
-		return this::selfInitialize;
+		return this::selfInitialize;//返回的是selfInitialize方法的引用，此时还未执行
 	}
 
 	private void selfInitialize(ServletContext servletContext) throws ServletException {
 		prepareWebApplicationContext(servletContext);
 		registerApplicationScope(servletContext);
 		WebApplicationContextUtils.registerEnvironmentBeans(getBeanFactory(), servletContext);
+		/**
+		 * getServletContextInitializerBeans寻找所有已扫描的bean中实现了ServletContextInitializer接口的类
+		 * {@link ServletContextInitializerBeans#addServletContextInitializerBeans(org.springframework.beans.factory.ListableBeanFactory)}
+		 */
 		for (ServletContextInitializer beans : getServletContextInitializerBeans()) {
 			/**
 			 * {@link org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean}

@@ -21,6 +21,7 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.method.support.InvocableHandlerMethod;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -46,10 +47,12 @@ import javax.servlet.ServletContext;
 public class StartMvc {
 	/**
 	 * 1. tomact启动前加载部分配置
+	 * {@link AbstractApplicationContext#refresh()}
 	 * {@link TomcatServletWebServerFactory#getWebServer(org.springframework.boot.web.servlet.ServletContextInitializer...)}
 	 *
 	 * 2. DispatcherServletRegistrationBean(ServletContextInitializer)配置到当前Context
-	 * （DispatcherServletRegistrationBean  implements ServletContextInitializer 并且.servlet = DispatcherServlet）
+	 * 		spring.factories加载{@link DispatcherServletAutoConfiguration.DispatcherServletRegistrationConfiguration#dispatcherServletRegistration(org.springframework.web.servlet.DispatcherServlet, org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties, org.springframework.beans.factory.ObjectProvider)}
+	 * 	    DispatcherServletRegistrationBean  implements ServletContextInitializer 并且.servlet = DispatcherServlet
 	 * {@link TomcatServletWebServerFactory#prepareContext(org.apache.catalina.Host, org.springframework.boot.web.servlet.ServletContextInitializer[])}
 	 * 		（context.setPath(getContextPath());//设置contextPath，默认为空字符串，即拦截所有请求）
 	 * {@link TomcatServletWebServerFactory#configureContext(org.apache.catalina.Context, org.springframework.boot.web.servlet.ServletContextInitializer[])}
@@ -65,8 +68,9 @@ public class StartMvc {
 	 * 		(startInternal();)
 	 * {@link StandardContext#startInternal()}
 	 * 		(entry.getKey().onStartup(entry.getValue(), getServletContext());
-	 * 		//getServletContext实例化ApplicationContext，返回的却是持有ApplicationContext的ApplicationContextFacade门店模式)
-	 * 	4.2 将DispatcherServlet加载到tomact
+	 * 		//getServletContext实例化ApplicationContext，返回的却是持有ApplicationContext的ApplicationContextFacade门面模式)
+	 * 4.2 将DispatcherServlet加载到tomact {@link DispatcherServlet}
+	 * 		DispatcherServlet extend HttpServlet implements Servlet 重写了HttpServlet的doGet/doPost等,会在以下地方注册到Tomact
 	 * 		DispatcherServletRegistrationBean(ServletContextInitializer).onStartup
 	 * {@link DispatcherServletRegistrationBean#onStartup(javax.servlet.ServletContext)}
 	 * {@link DispatcherServletRegistrationBean#addRegistration(java.lang.String, javax.servlet.ServletContext)}
@@ -88,49 +92,6 @@ public class StartMvc {
 	 * {@link DispatcherServletRegistrationBean#configure(javax.servlet.ServletRegistration.Dynamic)}
 	 * {@link org.springframework.boot.web.embedded.tomcat.TomcatEmbeddedContext#addServletMappingDecoded(java.lang.String, java.lang.String, boolean)}
 	 * 		(servletMappings.put(adjustedPattern, name);)
-	 *
-	 * 如何分发请求的，如何接入requestMapping
-	 * {@link RequestMappingHandlerAdapter}
-	 * {@link RequestMappingHandlerAdapter#handle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)}
-	 *
-	 *
-	 * DispatcherServletRegistrationBean在以下位置加载
-	 * （DispatcherServletRegistrationBean  implements ServletContextInitializer 并且.servlet = DispatcherServlet）
-	 * {@link DispatcherServletAutoConfiguration}(spring.factories加载DispatcherServletAutoConfiguration)
-	 * {@link DispatcherServletAutoConfiguration.DispatcherServletRegistrationConfiguration#dispatcherServletRegistration(org.springframework.web.servlet.DispatcherServlet, org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties, org.springframework.beans.factory.ObjectProvider)}
-	 * {@link DispatcherServletRegistrationBean}
-	 *
-	 * {@link DispatcherServlet}
-	 * DispatcherServlet extend HttpServlet implements Servlet
-	 * 重写了HttpServlet的doGet/doPost等
-	 * 会在以下地方注册到Tomact
-	 * {@link ServletRegistrationBean#addRegistration(java.lang.String, javax.servlet.ServletContext)}
-	 *
-	 *  {@link org.apache.catalina.core.ApplicationContext} implements {@link ServletContext}
-	 * ServletContext等同于【org.apache.catalina.Context】，其在以下方法持有Context的引用
-	 * {@link org.apache.catalina.core.ApplicationContext#getContext(java.lang.String)}
-	 *  实例化ApplicationContext
-	 * {@link StandardContext#startInternal()}
-	 *		(entry.getKey().onStartup(entry.getValue(), getServletContext());//getServletContext实例化ApplicationContext)
-	 *  新增servlet
-	 * {@link ServletContext#addServlet(java.lang.String, java.lang.Class)}
-	 *
-	 *
-	 * ServletContextInitializer会在以下地方回调onStartup，并传入当前Context
-	 * {@link TomcatServletWebServerFactory#configureContext(org.apache.catalina.Context, org.springframework.boot.web.servlet.ServletContextInitializer[])}
-	 * 		（context.addServletContainerInitializer(starter, NO_CLASSES);//累加ServletContextInitializer到tomact）
-	 * {@link StandardContext#addServletContainerInitializer(javax.servlet.ServletContainerInitializer, java.util.Set)}
-	 * {@link ServletWebServerApplicationContext#selfInitialize(javax.servlet.ServletContext)}
-	 * {@link Tomcat#start()}
-	 * {@link LifecycleBase#start()}
-	 * {@link StandardContext#startInternal()}
-	 * 		(entry.getKey().onStartup(entry.getValue(), getServletContext());//回调onStartup)
-	 * {@link ServletContextInitializer#onStartup(javax.servlet.ServletContext)}
-	 *
-	 *
-	 * 九大组件在以下位置初始化
-	 * {@link DispatcherServlet#initStrategies(org.springframework.context.ApplicationContext)}
-	 *
 	 *
 	 * RequestMapping在以下位置处理
 	 * @RequestMapping的载体
@@ -180,6 +141,33 @@ public class StartMvc {
 	 * 		（StreamUtils.copy(str, charset, outputMessage.getBody());）
 	 *
 	 * org.springframework.boot.web.servlet.ServletContextInitializer
+	 *
+	 *
+	 *
+	 * 九大组件在以下位置初始化
+	 * {@link DispatcherServlet#initStrategies(org.springframework.context.ApplicationContext)}
+	 *
+	 *
+	 * ServletContextInitializer会在以下地方回调onStartup，并传入当前Context
+	 * {@link TomcatServletWebServerFactory#configureContext(org.apache.catalina.Context, org.springframework.boot.web.servlet.ServletContextInitializer[])}
+	 * 		（context.addServletContainerInitializer(starter, NO_CLASSES);//累加ServletContextInitializer到tomact）
+	 * {@link StandardContext#addServletContainerInitializer(javax.servlet.ServletContainerInitializer, java.util.Set)}
+	 * {@link ServletWebServerApplicationContext#selfInitialize(javax.servlet.ServletContext)}
+	 * {@link Tomcat#start()}
+	 * {@link LifecycleBase#start()}
+	 * {@link StandardContext#startInternal()}
+	 * 		(entry.getKey().onStartup(entry.getValue(), getServletContext());//回调onStartup)
+	 * {@link ServletContextInitializer#onStartup(javax.servlet.ServletContext)}
+	 *
+	 *
+	 *  {@link org.apache.catalina.core.ApplicationContext} implements {@link ServletContext}
+	 * ServletContext等同于【org.apache.catalina.Context】，其在以下方法持有Context的引用
+	 * {@link org.apache.catalina.core.ApplicationContext#getContext(java.lang.String)}
+	 *  实例化ApplicationContext
+	 * {@link StandardContext#startInternal()}
+	 *		(entry.getKey().onStartup(entry.getValue(), getServletContext());//getServletContext实例化ApplicationContext)
+	 *  新增servlet
+	 * {@link ServletContext#addServlet(java.lang.String, java.lang.Class)}
 	 * @param args
 	 */
 	public static void main(String[] args) {
