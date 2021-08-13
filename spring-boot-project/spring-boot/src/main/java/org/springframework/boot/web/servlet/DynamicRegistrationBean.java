@@ -105,13 +105,17 @@ public abstract class DynamicRegistrationBean<D extends Registration.Dynamic> ex
 
 	@Override
 	protected final void register(String description, ServletContext servletContext) {
+		/**
+		 * 向tomact注册DispatcherServlet
+		 * {@link ServletRegistrationBean#addRegistration(java.lang.String, javax.servlet.ServletContext)}
+		 */
 		D registration = addRegistration(description, servletContext);
 		if (registration == null) {
 			logger.info(StringUtils.capitalize(description) + " was not registered (possibly already registered?)");
 			return;
 		}
 		/**
-		 *  //设置path-DispatcherServlet的映射关系
+		 * 设置path-DispatcherServlet的映射关系
 		 * {@link ServletRegistrationBean#configure(javax.servlet.ServletRegistration.Dynamic)}
 		 */
 		configure(registration);

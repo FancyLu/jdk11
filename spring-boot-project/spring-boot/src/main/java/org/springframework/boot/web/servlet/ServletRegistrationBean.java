@@ -26,6 +26,7 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
+import org.apache.catalina.core.ApplicationContextFacade;
 import org.apache.catalina.core.ApplicationServletRegistration;
 import org.apache.catalina.core.StandardContext;
 import org.springframework.util.Assert;
@@ -177,6 +178,9 @@ public class ServletRegistrationBean<T extends Servlet> extends DynamicRegistrat
 	@Override
 	protected ServletRegistration.Dynamic addRegistration(String description, ServletContext servletContext) {
 		String name = getServletName();
+		/**
+		 * {@link ApplicationContextFacade#addServlet(java.lang.String, javax.servlet.Servlet)}
+		 */
 		return servletContext.addServlet(name, this.servlet);//将DispatcherServlet加载到tomact
 	}
 

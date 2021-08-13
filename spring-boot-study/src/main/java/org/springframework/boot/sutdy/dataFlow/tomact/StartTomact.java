@@ -16,6 +16,10 @@ import org.springframework.context.support.AbstractApplicationContext;
  */
 @SpringBootApplication
 public class StartTomact {
+	public StartTomact() {
+		System.out.println("aa");
+	}
+
 	/**
 	 * 1.引入spring-boot-starter-web包，间接引入了以下class
 	 * spring-web下的{@link org.springframework.web.context.ConfigurableWebApplicationContext 和 tomcat-embed-core下的{@link javax.servlet.Servlet}}
@@ -46,6 +50,8 @@ public class StartTomact {
 	 * 			( this.tomcat.start(); fixme 启动tomact)
 	 *
 	 */
+
+
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = SpringApplication.run(StartTomact.class, args);
 	}

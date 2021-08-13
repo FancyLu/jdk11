@@ -2,7 +2,10 @@ package org.springframework.boot.sutdy.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.websocket.server.PathParam;
 
 /**
  * @author nicky
@@ -12,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 public class TestController {
 	@RequestMapping(path = "/test", method = RequestMethod.GET)
-	public String test() {
-		return "Hellow World!";
+	public String test(@RequestParam("param1") String param1) {
+		return "Hellow World!"+param1;
 	}
 	@RequestMapping(path = "/test1", method = RequestMethod.GET)
 	public String test1() {

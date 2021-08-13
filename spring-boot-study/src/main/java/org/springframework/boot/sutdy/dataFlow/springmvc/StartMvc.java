@@ -132,9 +132,12 @@ public class StartMvc {
 	 * {@link InvocableHandlerMethod#doInvoke(java.lang.Object...)}
 	 * 		（method.invoke(getBean(), args);//调用@RequestMapping-Method）
 	 *
+	 * 	RequestMapping-Method的形参
+	 *
 	 * 把请求值写入request
 	 * {@link Http11Processor#service(org.apache.tomcat.util.net.SocketWrapperBase)}
 	 * 		（getAdapter().service(request, response);）
+	 *
 	 *
 	 * 把返回值写入response
 	 * {@link StringHttpMessageConverter#writeInternal(java.lang.String, org.springframework.http.HttpOutputMessage)}
