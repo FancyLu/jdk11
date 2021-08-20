@@ -70,6 +70,7 @@ class TomcatEmbeddedContext extends StandardContext {
 		for (Container child : children) {
 			Wrapper wrapper = (Wrapper) child;
 			int order = wrapper.getLoadOnStartup();
+			// 配置spring.mvc.servlet.load-on-startup
 			if (order >= 0) {
 				grouped.computeIfAbsent(order, (o) -> new ArrayList<>()).add(wrapper);
 			}

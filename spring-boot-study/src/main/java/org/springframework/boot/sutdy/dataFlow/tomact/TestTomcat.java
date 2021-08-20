@@ -14,7 +14,6 @@ import java.io.IOException;
  * https://www.cnblogs.com/haimishasha/p/10740606.html
  * Server -> Service -> Connector -> Engine -> Host -> Context
  * -> Wrapper -> Servlet
- *
  */
 public class TestTomcat {
 	public static void main(String[] args) throws Exception {

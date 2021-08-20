@@ -3,6 +3,7 @@ package org.springframework.boot.sutdy.dataFlow.springmvc;
 import org.apache.catalina.core.ApplicationContextFacade;
 import org.apache.catalina.core.ContainerBase;
 import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.core.StandardWrapper;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.util.LifecycleBase;
 import org.apache.coyote.http11.Http11Processor;
@@ -12,6 +13,8 @@ import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoC
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.sutdy.controller.TestController;
+import org.springframework.boot.sutdy.controller.TestControllerB;
+import org.springframework.boot.sutdy.controller.TestService;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.servlet.DynamicRegistrationBean;
@@ -26,6 +29,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.method.support.InvocableHandlerMethod;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
+import org.springframework.web.servlet.HttpServletBean;
 import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
 import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -42,7 +46,7 @@ import javax.servlet.ServletContext;
  * @author nicky
  * @date 2021/7/30 下午6:42
  */
-@Import(value = {TestController.class})
+@Import(value = {TestService.class, TestController.class, TestControllerB.class})
 @SpringBootApplication
 public class StartMvc {
 	/**
@@ -97,6 +101,8 @@ public class StartMvc {
 	 * @RequestMapping的载体
 	 * {@link AbstractHandlerMethodMapping.MappingRegistration}
 	 * RequestMappingHandlerMapping的注册
+	 * RequestMappingHandlerMapping extends AbstractHandlerMethodMapping<RequestMappingInfo>
+	 * {@link RequestMappingHandlerMapping}
 	 * {@link WebMvcAutoConfiguration.EnableWebMvcConfiguration#requestMappingHandlerMapping(org.springframework.web.accept.ContentNegotiationManager, org.springframework.format.support.FormattingConversionService, org.springframework.web.servlet.resource.ResourceUrlProvider)}
 	 *
 	 * RequestMapping-Method的注册
@@ -143,12 +149,19 @@ public class StartMvc {
 	 * {@link StringHttpMessageConverter#writeInternal(java.lang.String, org.springframework.http.HttpOutputMessage)}
 	 * 		（StreamUtils.copy(str, charset, outputMessage.getBody());）
 	 *
-	 * org.springframework.boot.web.servlet.ServletContextInitializer
 	 *
 	 *
-	 *
-	 * 九大组件在以下位置初始化
+	 * 加载DispatcherServlet九大组件
+	 * {@link StandardWrapper#initServlet(javax.servlet.Servlet)}
+	 * {@link HttpServletBean#init()}
+	 * {@link FrameworkServlet#initServletBean()}
+	 * {@link FrameworkServlet#initWebApplicationContext()}
+	 * 		（onRefresh(wac);）
 	 * {@link DispatcherServlet#initStrategies(org.springframework.context.ApplicationContext)}
+	 * 也可以启动时加载（配置）
+	 * {@link DispatcherServletAutoConfiguration.DispatcherServletRegistrationConfiguration#dispatcherServletRegistration(org.springframework.web.servlet.DispatcherServlet, org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties, org.springframework.beans.factory.ObjectProvider)}
+	 * 		(registration.setLoadOnStartup(webMvcProperties.getServlet().getLoadOnStartup());)
+	 * {@link org.springframework.boot.web.embedded.tomcat.TomcatEmbeddedContext#getLoadOnStartupWrappers(org.apache.catalina.Container[])}
 	 *
 	 *
 	 * ServletContextInitializer会在以下地方回调onStartup，并传入当前Context
@@ -175,5 +188,7 @@ public class StartMvc {
 	 */
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = SpringApplication.run(StartMvc.class, args);
+		TestService testService = applicationContext.getBean(TestService.class);
+		testService.test();
 	}
 }

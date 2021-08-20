@@ -14,6 +14,11 @@ import javax.websocket.server.PathParam;
 @RestController
 @RequestMapping
 public class TestController {
+
+	public TestController() {
+		System.out.println("2222");
+	}
+
 	@RequestMapping(path = "/test", method = RequestMethod.GET)
 	public String test(@RequestParam("param1") String param1) {
 		return "Hellow World!"+param1;

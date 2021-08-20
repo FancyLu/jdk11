@@ -128,6 +128,7 @@ public class DispatcherServletAutoConfiguration {
 			DispatcherServletRegistrationBean registration = new DispatcherServletRegistrationBean(dispatcherServlet,
 					webMvcProperties.getServlet().getPath());
 			registration.setName(DEFAULT_DISPATCHER_SERVLET_BEAN_NAME);
+			//设置是否启动时初始化servlet.init（配置spring.mvc.servlet.load-on-startup）
 			registration.setLoadOnStartup(webMvcProperties.getServlet().getLoadOnStartup());
 			multipartConfig.ifAvailable(registration::setMultipartConfig);
 			return registration;
