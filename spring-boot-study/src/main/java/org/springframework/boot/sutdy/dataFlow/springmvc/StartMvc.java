@@ -13,14 +13,11 @@ import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoC
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletRegistrationBean;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.sutdy.controller.TestController;
-import org.springframework.boot.sutdy.controller.TestControllerB;
-import org.springframework.boot.sutdy.controller.TestService;
+import org.springframework.boot.sutdy.service.TestService;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.servlet.DynamicRegistrationBean;
-import org.springframework.boot.web.servlet.RegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
@@ -34,8 +31,6 @@ import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
 import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 
@@ -46,8 +41,8 @@ import javax.servlet.ServletContext;
  * @author nicky
  * @date 2021/7/30 下午6:42
  */
-@Import(value = {TestService.class, TestController.class, TestControllerB.class})
-@SpringBootApplication
+//@Import(value = {TestController.class, TestController.class})
+//@SpringBootApplication
 public class StartMvc {
 	/**
 	 * 1. tomact启动前加载部分配置
