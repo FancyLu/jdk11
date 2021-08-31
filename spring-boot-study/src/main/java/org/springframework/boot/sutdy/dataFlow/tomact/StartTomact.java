@@ -37,7 +37,7 @@ public class StartTomact {
 	 * {@link SpringApplication#run(java.lang.String...)}
 	 * (refreshContext(context);)
 	 *		{@link AbstractApplicationContext#refresh()}
-	 * 		( this.onRefresh();//加载IOC)
+	 * 		( this.onRefresh();//加载tomact)
 	 * 			 TomcatServletWebServerFactory在spring.factories配置的ServletWebServerFactoryAutoConfiguration.class的EmbeddedTomcat加载
 	 *           {@link org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration}
 	 * 			 {@link org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryConfiguration.EmbeddedTomcat#tomcatServletWebServerFactory(org.springframework.beans.factory.ObjectProvider, org.springframework.beans.factory.ObjectProvider, org.springframework.beans.factory.ObjectProvider)}

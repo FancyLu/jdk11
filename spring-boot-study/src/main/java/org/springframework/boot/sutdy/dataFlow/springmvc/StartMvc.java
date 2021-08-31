@@ -41,8 +41,8 @@ import javax.servlet.ServletContext;
  * @author nicky
  * @date 2021/7/30 下午6:42
  */
-//@Import(value = {TestController.class, TestController.class})
-//@SpringBootApplication
+@Import(value = {TestController.class, TestService.class})
+@SpringBootApplication
 public class StartMvc {
 	/**
 	 * 1. tomact启动前加载部分配置

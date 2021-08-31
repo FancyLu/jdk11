@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletContainerInitializer;
+import javax.servlet.annotation.HandlesTypes;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.Engine;
@@ -373,6 +374,7 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 	 * @param initializers initializers to apply
 	 */
 	protected void configureContext(Context context, ServletContextInitializer[] initializers) {
+		// TomcatStarter implements ServletContainerInitializer
 		TomcatStarter starter = new TomcatStarter(initializers);
 		if (context instanceof TomcatEmbeddedContext) {
 			TomcatEmbeddedContext embeddedContext = (TomcatEmbeddedContext) context;
@@ -384,6 +386,9 @@ public class TomcatServletWebServerFactory extends AbstractServletWebServerFacto
 		 * {@link StandardContext#initializers}
 		 * 在以下位置回调ServletContextInitializer#onStartup
 		 * {@link StandardContext#startInternal()}
+		 *
+		 * addServletContainerInitializer类似于以下注解
+		 * {@link HandlesTypes}
 		 */
 		context.addServletContainerInitializer(starter, NO_CLASSES);
 		for (LifecycleListener lifecycleListener : this.contextLifecycleListeners) {

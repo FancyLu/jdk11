@@ -243,11 +243,12 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 * @see #prepareWebApplicationContext(ServletContext)
 	 */
 	private org.springframework.boot.web.servlet.ServletContextInitializer getSelfInitializer() {
-		return this::selfInitialize;//返回的是selfInitialize方法的引用，此时还未执行
+		//返回的是selfInitialize方法的引用，此时还未执行 相当于ServletWebServerApplicationContext间接实现了ServletContextInitializer接口
+		return this::selfInitialize;
 	}
 
 	private void selfInitialize(ServletContext servletContext) throws ServletException {
-		prepareWebApplicationContext(servletContext);
+		prepareWebApplicationContext(servletContext);// 把创建好的【spring.root容器】，交给tomact.servletContext内置对象
 		registerApplicationScope(servletContext);
 		WebApplicationContextUtils.registerEnvironmentBeans(getBeanFactory(), servletContext);
 		/**
@@ -305,6 +306,11 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 		}
 		servletContext.log("Initializing Spring embedded WebApplicationContext");
 		try {
+			/**
+			 * 把创建好的【spring.root容器】，交给tomact.servletContext内置对象，多个servlet公用
+			 * 方便后续其他地方通过静态方法获取【spring.root容器】
+			 * {@link WebApplicationContextUtils#getWebApplicationContext(javax.servlet.ServletContext)}
+			 */
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Published root WebApplicationContext as ServletContext attribute with name ["
