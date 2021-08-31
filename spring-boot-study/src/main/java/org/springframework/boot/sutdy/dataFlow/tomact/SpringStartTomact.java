@@ -15,8 +15,8 @@ import org.springframework.context.support.AbstractApplicationContext;
  * @date 2021/7/30 下午4:50
  */
 @SpringBootApplication
-public class StartTomact {
-	public StartTomact() {
+public class SpringStartTomact {
+	public SpringStartTomact() {
 		System.out.println("aa");
 	}
 
@@ -53,6 +53,6 @@ public class StartTomact {
 
 
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = SpringApplication.run(StartTomact.class, args);
+		ApplicationContext applicationContext = SpringApplication.run(SpringStartTomact.class, args);
 	}
 }

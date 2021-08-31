@@ -1,5 +1,6 @@
 package org.springframework.boot.sutdy.dataFlow.tomact;
 
+import org.apache.catalina.ContainerListener;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
@@ -15,7 +16,7 @@ import java.io.IOException;
  * Server -> Service -> Connector -> Engine -> Host -> Context
  * -> Wrapper -> Servlet
  */
-public class TestTomcat {
+public class TestTomact1 {
 	public static void main(String[] args) throws Exception {
 		//构建tomcat对象,此对象为启动tomcat服务的入口对象
 		Tomcat t = new Tomcat();
@@ -38,6 +39,7 @@ public class TestTomcat {
 				});
 		//映射servlet
 		ctx.addServletMappingDecoded("/hello", "helloServlet");
+		//ctx.addServletContainerInitializer(new MyServletContainerInitializer(), null);
 		//启动tomcat
 		t.start();
 		//阻塞当前线程
