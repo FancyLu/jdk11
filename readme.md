@@ -7,7 +7,7 @@
 > </br>spring码云地址： https://gitee.com/tangjingshan/Spring-Framework
 > 
 > </br>springboot版本：2.4.3
-> </br>springboot码云地址：https://gitee.com/tangjingshan/spring-boot> 
+> </br>springboot码云地址：https://gitee.com/tangjingshan/spring-boot
 > 
 >   </br>切换无更改分支：git checkout nicky5.3.4（只改了配置，没有改动源码）
 > 
