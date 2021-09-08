@@ -47,7 +47,9 @@ public class StartMvc {
 	/**
 	 * 1. tomact启动前加载部分配置
 	 * {@link AbstractApplicationContext#refresh()}
+	 * {@link ServletWebServerApplicationContext#onRefresh()}
 	 * {@link TomcatServletWebServerFactory#getWebServer(org.springframework.boot.web.servlet.ServletContextInitializer...)}
+	 * 		（initializers指向 {@link ServletWebServerApplicationContext#selfInitialize(javax.servlet.ServletContext)}）
 	 *
 	 * 2. DispatcherServletRegistrationBean(ServletContextInitializer)配置到当前Context
 	 * 		spring.factories加载{@link DispatcherServletAutoConfiguration.DispatcherServletRegistrationConfiguration#dispatcherServletRegistration(org.springframework.web.servlet.DispatcherServlet, org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties, org.springframework.beans.factory.ObjectProvider)}
@@ -55,6 +57,7 @@ public class StartMvc {
 	 * {@link TomcatServletWebServerFactory#prepareContext(org.apache.catalina.Host, org.springframework.boot.web.servlet.ServletContextInitializer[])}
 	 * 		（context.setPath(getContextPath());//设置contextPath，默认为空字符串，即拦截所有请求）
 	 * {@link TomcatServletWebServerFactory#configureContext(org.apache.catalina.Context, org.springframework.boot.web.servlet.ServletContextInitializer[])}
+	 * 		（TomcatStarter starter = new TomcatStarter(initializers);//fixme TomcatStarter implements ServletContainerInitializer,其会在toamact.context.start时回调）
 	 * 		（context.addServletContainerInitializer(starter, NO_CLASSES);//累加ServletContextInitializer到Context）
 	 *
 	 * 3 toamact.start
