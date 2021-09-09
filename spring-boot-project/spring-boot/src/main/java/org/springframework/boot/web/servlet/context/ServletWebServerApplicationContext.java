@@ -244,6 +244,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	 */
 	private org.springframework.boot.web.servlet.ServletContextInitializer getSelfInitializer() {
 		//返回的是selfInitialize方法的引用，此时还未执行 相当于ServletWebServerApplicationContext间接实现了ServletContextInitializer接口
+		//这样写可以更方便获取BeanFactory等
 		return this::selfInitialize;
 	}
 
