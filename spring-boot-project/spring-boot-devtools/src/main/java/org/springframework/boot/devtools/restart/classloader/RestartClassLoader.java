@@ -139,9 +139,11 @@ public class RestartClassLoader extends URLClassLoader implements SmartClassLoad
 			Class<?> loadedClass = findLoadedClass(name);
 			if (loadedClass == null) {
 				try {
+					// 1.优先尝试从【当前项目的工作路径（比如/target/classes）】去加载
 					loadedClass = findClass(name);
 				}
 				catch (ClassNotFoundException ex) {
+					// 2.然后再调用父加载器去加载，（一般情况下为AppClassloader）
 					loadedClass = Class.forName(name, false, getParent());
 				}
 			}

@@ -319,6 +319,7 @@ public class SpringApplication {
 		ConfigurableApplicationContext context = null;
 		configureHeadlessProperty();
 		SpringApplicationRunListeners listeners = getRunListeners(args);
+		// 发布启动事件ApplicationStartingEvent
 		listeners.starting(bootstrapContext, this.mainApplicationClass);
 		try {
 			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);

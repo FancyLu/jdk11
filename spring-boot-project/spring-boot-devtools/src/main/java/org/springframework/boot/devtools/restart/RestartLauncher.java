@@ -38,12 +38,14 @@ class RestartLauncher extends Thread {
 		setName("restartedMain");
 		setUncaughtExceptionHandler(exceptionHandler);
 		setDaemon(false);
+		//fixme 重置了线程的上下文类加载器
 		setContextClassLoader(classLoader);
 	}
 
 	@Override
 	public void run() {
 		try {
+			// 重新再次调用main方法 fixme 用的自定义类加载器
 			Class<?> mainClass = Class.forName(this.mainClassName, false, getContextClassLoader());
 			Method mainMethod = mainClass.getDeclaredMethod("main", String[].class);
 			mainMethod.invoke(null, new Object[] { this.args });

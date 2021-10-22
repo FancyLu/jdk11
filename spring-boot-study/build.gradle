@@ -9,6 +9,7 @@ description = "Spring Boot Study"
 dependencies {
     api(project(":spring-boot-project:spring-boot-starters:spring-boot-starter"))
     api(project(":spring-boot-project:spring-boot-starters:spring-boot-starter-web"))
+    api(project(":spring-boot-project:spring-boot-devtools"))
 //    api(":spring-boot-project:spring-boot-starters:spring-boot-starter-web:2.4.3") {
 //        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
 //    }

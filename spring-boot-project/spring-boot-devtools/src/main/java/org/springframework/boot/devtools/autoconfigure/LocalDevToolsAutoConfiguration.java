@@ -105,6 +105,7 @@ public class LocalDevToolsAutoConfiguration {
 				FileSystemWatcherFactory fileSystemWatcherFactory) {
 			return (event) -> {
 				if (event.isRestartRequired()) {
+					// 再次回调main方法，重启应用程序
 					Restarter.getInstance().restart(new FileWatchingFailureHandler(fileSystemWatcherFactory));
 				}
 			};

@@ -84,6 +84,7 @@ public class ClassPathFileSystemWatcher implements InitializingBean, DisposableB
 			this.fileSystemWatcher.addListener(
 					new ClassPathFileChangeListener(this.applicationContext, this.restartStrategy, watcherToStop));
 		}
+		// 另起一个线程，监听文件变更
 		this.fileSystemWatcher.start();
 	}
 

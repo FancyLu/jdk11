@@ -169,14 +169,19 @@ public class Restarter {
 	private void immediateRestart() {
 		try {
 			getLeakSafeThread().callAndWait(() -> {
-				start(FailureHandler.NONE);
-				cleanupCaches();
+				start(FailureHandler.NONE);// 重启应用程序
+				cleanupCaches();// 清理资源
 				return null;
 			});
 		}
 		catch (Exception ex) {
 			this.logger.warn("Unable to initialize restarter", ex);
 		}
+		/**
+		 * 抛出自定义异常，结束首次调用时的那条线程
+		 * 该异常会在以下位置被捕获，并不打印
+		 * {@link SilentExitExceptionHandler#uncaughtException(java.lang.Thread, java.lang.Throwable)}
+		 */
 		SilentExitExceptionHandler.exitCurrentThread();
 	}
 
@@ -248,8 +253,8 @@ public class Restarter {
 		}
 		this.logger.debug("Restarting application");
 		getLeakSafeThread().call(() -> {
-			Restarter.this.stop();
-			Restarter.this.start(failureHandler);
+			Restarter.this.stop();// 清理旧线程的资源
+			Restarter.this.start(failureHandler);// 重新调用main方法
 			return null;
 		});
 	}
@@ -276,6 +281,7 @@ public class Restarter {
 		Assert.notNull(this.mainClassName, "Unable to find the main class to restart");
 		URL[] urls = this.urls.toArray(new URL[0]);
 		ClassLoaderFiles updatedFiles = new ClassLoaderFiles(this.classLoaderFiles);
+		// 实例化一个新的类加载器
 		ClassLoader classLoader = new RestartClassLoader(this.applicationClassLoader, urls, updatedFiles, this.logger);
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Starting application " + this.mainClassName + " with URLs " + Arrays.asList(urls));
@@ -306,10 +312,10 @@ public class Restarter {
 		this.stopLock.lock();
 		try {
 			for (ConfigurableApplicationContext context : this.rootContexts) {
-				context.close();
+				context.close();// 结束之前的spring上下文
 				this.rootContexts.remove(context);
 			}
-			cleanupCaches();
+			cleanupCaches();//清理一些已知的资源（比如静态常量等，springmvc的url映射就是存放在一个静态常量的）
 			if (this.forceReferenceCleanup) {
 				forceReferenceCleanup();
 			}
@@ -317,6 +323,7 @@ public class Restarter {
 		finally {
 			this.stopLock.unlock();
 		}
+		// 强制gc 释放资源
 		System.gc();
 		System.runFinalization();
 	}

@@ -47,6 +47,7 @@ public class RestartApplicationListener implements ApplicationListener<Applicati
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof ApplicationStartingEvent) {
+			// 这里监听了springboot的启动事件ApplicationStartingEvent
 			onApplicationStartingEvent((ApplicationStartingEvent) event);
 		}
 		if (event instanceof ApplicationPreparedEvent) {
@@ -87,6 +88,7 @@ public class RestartApplicationListener implements ApplicationListener<Applicati
 			if (!restartOnInitialize) {
 				logger.info("Restart disabled due to an agent-based reloader being active");
 			}
+			// 尝试重新调用main方法
 			Restarter.initialize(args, false, restartInitializer, restartOnInitialize);
 		}
 		else {
