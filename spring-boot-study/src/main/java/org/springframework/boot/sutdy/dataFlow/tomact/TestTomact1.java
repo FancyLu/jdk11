@@ -13,8 +13,8 @@ import java.io.IOException;
 /**
  * tomact各个组件
  * https://www.cnblogs.com/haimishasha/p/10740606.html
- * Server -> Service -> Connector -> Engine -> Host -> Context
- * -> Wrapper -> Servlet
+ * Server -> Service -> Connector(处理请求的线程池) -> Engine -> Host -> Context(web程序)
+ * -> Wrapper(Servlet包装类)
  */
 public class TestTomact1 {
 	public static void main(String[] args) throws Exception {

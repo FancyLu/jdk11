@@ -99,6 +99,7 @@ public class RestartApplicationListener implements ApplicationListener<Applicati
 	}
 
 	private void onApplicationPreparedEvent(ApplicationPreparedEvent event) {
+		// 存入spring上下文的引用
 		Restarter.getInstance().prepare(event.getApplicationContext());
 	}
 
